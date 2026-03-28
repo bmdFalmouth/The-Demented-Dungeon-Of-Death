@@ -1,8 +1,37 @@
-[gd_scene format=3 uid="uid://twm77gammvgx"]
+[gd_scene format=4 uid="uid://twm77gammvgx"]
 
 [ext_resource type="PackedScene" uid="uid://cdxntgyq6cku0" path="res://Characters/PlayerCharacter.tscn" id="1_e5koq"]
+[ext_resource type="Texture2D" uid="uid://bn4rwtgnyci4w" path="res://Sprites/walls_doors.png" id="2_ydat2"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c3uxd"]
+texture = ExtResource("2_ydat2")
+texture_region_size = Vector2i(24, 21)
+4:0/0 = 0
+5:0/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_gfbe4"]
+tile_size = Vector2i(24, 21)
+sources/0 = SubResource("TileSetAtlasSource_c3uxd")
 
 [node name="Node2D" type="Node2D" unique_id=338707762]
 
 [node name="PlayerCharacter" parent="." unique_id=612200860 instance=ExtResource("1_e5koq")]
-position = Vector2(590, 376)
+position = Vector2(5, -2)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=318109177]
+
+[node name="Node2D" type="Node2D" parent="." unique_id=1564912098]
+
+[node name="Background" type="TileMapLayer" parent="Node2D" unique_id=840135203]
+tile_map_data = PackedByteArray("AAD+/wEAAAAAAAAAAAD+/wIAAAAAAAAAAAD//wIAAAAAAAAAAAD//wEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAABAAIAAAAAAAAAAAABAAEAAAAAAAAAAAACAAEAAAAAAAAAAAACAAAAAAAAAAAAAAACAP//AAAAAAAAAAACAP7/AAAAAAAAAAACAP3/AAAAAAAAAAABAPz/AAABAAAAAAACAPz/AAAAAAAAAAAAAPz/AAAAAAAAAAD///z/AAAAAAAAAAD+//z/AAAAAAAAAAD9//z/AAAAAAAAAAD9//3/AAAAAAAAAAD9//7/AAAAAAAAAAD9/wAAAAAAAAAAAAD9////AAAAAAAAAAD9/wEAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_gfbe4")
