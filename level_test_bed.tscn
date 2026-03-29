@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://twm77gammvgx"]
 
 [ext_resource type="PackedScene" uid="uid://cdxntgyq6cku0" path="res://Characters/PlayerCharacter.tscn" id="1_e5koq"]
+[ext_resource type="Script" uid="uid://bqi736frwtmmi" path="res://Characters/player_character.gd" id="2_c3uxd"]
 [ext_resource type="Texture2D" uid="uid://bn4rwtgnyci4w" path="res://Sprites/walls_doors.png" id="2_ydat2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c3uxd"]
@@ -28,7 +29,8 @@ sources/0 = SubResource("TileSetAtlasSource_c3uxd")
 [node name="Node2D" type="Node2D" unique_id=338707762]
 
 [node name="PlayerCharacter" parent="." unique_id=612200860 instance=ExtResource("1_e5koq")]
-position = Vector2(16, 96)
+position = Vector2(48, 0)
+script = ExtResource("2_c3uxd")
 
 [node name="Camera2D" type="Camera2D" parent="PlayerCharacter" unique_id=318109177]
 position = Vector2(-16, -96)

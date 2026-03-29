@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://cdxntgyq6cku0"]
 
-[ext_resource type="Script" uid="uid://bqi736frwtmmi" path="res://Characters/player_character.gd" id="1_sahuj"]
 [ext_resource type="Texture2D" uid="uid://dmbgejxe8p1em" path="res://Sprites/Player_Walk.png" id="1_wwuin"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sahuj"]
@@ -77,16 +76,13 @@ animations = [{
 }]
 
 [node name="PlayerCharacter" type="CharacterBody2D" unique_id=612200860]
-script = ExtResource("1_sahuj")
-
-[node name="MyspritesSpritesheet" type="Sprite2D" parent="." unique_id=766352930]
-texture = ExtResource("1_wwuin")
-hframes = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1506310608]
+position = Vector2(-17, -11)
 shape = SubResource("RectangleShape2D_sahuj")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1955852575]
+position = Vector2(-12, -10.5)
 sprite_frames = SubResource("SpriteFrames_aetjj")
 animation = &"Walk_Animation"
 frame = 2
