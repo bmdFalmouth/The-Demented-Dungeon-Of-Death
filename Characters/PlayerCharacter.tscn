@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://cdxntgyq6cku0"]
 
+[ext_resource type="Script" uid="uid://bqi736frwtmmi" path="res://Characters/player_character.gd" id="1_sahuj"]
 [ext_resource type="Texture2D" uid="uid://dmbgejxe8p1em" path="res://Sprites/Player_Walk.png" id="1_wwuin"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sahuj"]
@@ -76,6 +77,7 @@ animations = [{
 }]
 
 [node name="PlayerCharacter" type="CharacterBody2D" unique_id=612200860]
+script = ExtResource("1_sahuj")
 
 [node name="MyspritesSpritesheet" type="Sprite2D" parent="." unique_id=766352930]
 texture = ExtResource("1_wwuin")
