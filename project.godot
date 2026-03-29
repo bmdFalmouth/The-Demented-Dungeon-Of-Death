@@ -24,6 +24,10 @@ window/size/window_height_override=480
 window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
 
+[layer_names]
+
+2d_physics/layer_2="walls"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

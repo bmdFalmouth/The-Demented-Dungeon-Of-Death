@@ -11,6 +11,7 @@ texture_region_size = Vector2i(24, 21)
 4:1/0 = 0
 5:1/0 = 0
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-12, -10.5, 12, -10.5, 12, 10.5, -12, 10.5)
 1:0/0 = 0
 2:0/0 = 0
 3:0/0 = 0
@@ -21,6 +22,7 @@ texture_region_size = Vector2i(24, 21)
 
 [sub_resource type="TileSet" id="TileSet_gfbe4"]
 tile_size = Vector2i(24, 21)
+physics_layer_0/collision_layer = 2
 sources/0 = SubResource("TileSetAtlasSource_c3uxd")
 
 [node name="Node2D" type="Node2D" unique_id=338707762]

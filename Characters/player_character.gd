@@ -68,7 +68,16 @@ func _on_move_complete() -> void:
 	play_idle_animation()
 
 func is_tile_blocked(target: Vector2) -> bool:
-	return false
+	var space := get_world_2d().direct_space_state
+	var query := PhysicsRayQueryParameters2D.create(
+		position,
+		target,
+		0b00000010)
+	
+	query.exclude=[self]
+	var result:=space.intersect_ray(query)
+
+	return not result.is_empty()
 
 func update_facing(dir: Vector2) -> void:
 	if dir.x>0:
