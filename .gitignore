@@ -27,3 +27,6 @@ mono_crash.*.json
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+#mac os
+.DS_Store
