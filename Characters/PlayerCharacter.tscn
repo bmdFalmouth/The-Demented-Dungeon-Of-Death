@@ -2,8 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://dmbgejxe8p1em" path="res://Sprites/Player_Walk.png" id="1_wwuin"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sahuj"]
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_p0i8q"]
 atlas = ExtResource("1_wwuin")
 region = Rect2(0, 0, 24, 21)
@@ -75,15 +73,17 @@ animations = [{
 "speed": 9.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wwuin"]
+
 [node name="PlayerCharacter" type="CharacterBody2D" unique_id=612200860]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1506310608]
-position = Vector2(-17, -11)
-shape = SubResource("RectangleShape2D_sahuj")
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1955852575]
-position = Vector2(-12, -10.5)
 sprite_frames = SubResource("SpriteFrames_aetjj")
 animation = &"Walk_Animation"
 frame = 2
 frame_progress = 0.26975322
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1382872537]
+position = Vector2(-2.5, 0)
+scale = Vector2(1.1, 1.1)
+shape = SubResource("RectangleShape2D_wwuin")

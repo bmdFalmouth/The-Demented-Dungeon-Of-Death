@@ -1,4 +1,4 @@
-extends Node2D
+extends CharacterBody2D
 
 @export var tile_size: Vector2 = Vector2(24, 21)
 @export var move_duration: float = 0.18
@@ -10,22 +10,24 @@ var facing_direction: FacingDirection = FacingDirection.RIGHT
 var started_moving: bool = false
 var last_move: Vector2 = Vector2.ZERO
 var current_tween: Tween = null
+var debug_ray_target: Vector2 = Vector2.ZERO
 
 @onready var animation: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
 
 func _ready() -> void:
-	position.x = round(position.x / tile_size.x) * tile_size.x
-	position.y = round(position.y / tile_size.y) * tile_size.y
+	position.x = floor(position.x / tile_size.x) * tile_size.x + tile_size.x * 0.5
+	position.y = floor(position.y / tile_size.y) * tile_size.y + tile_size.y * 0.5
 
 func _process(_delta: float) -> void:
 	if started_moving:
 		return
+
 	var input := get_input_dir()
 	if input != Vector2.ZERO:
 		last_move = input
 
-	if not started_moving and last_move != Vector2.ZERO:
+	if last_move != Vector2.ZERO:
 		try_move(last_move)
 		last_move = Vector2.ZERO
 
@@ -39,13 +41,12 @@ func get_input_dir() -> Vector2:
 	return Vector2.ZERO
 
 func try_move(dir: Vector2) -> void:
-	started_moving = true  # gate closes immediately
+	started_moving = true
 
 	var target_pos: Vector2 = position + (dir * tile_size)
-	print("from: ", position, " to: ", target_pos, " delta: ", target_pos - position)
 
 	if is_tile_blocked(target_pos):
-		started_moving = false  # re-open gate so next input works
+		started_moving = false
 		play_idle_animation()
 		return
 
@@ -70,24 +71,29 @@ func _set_position_along_curve(t: float, from: Vector2, to: Vector2) -> void:
 	position = from.lerp(to, move_curve.sample(t))
 
 func _on_move_complete() -> void:
-	
-	position.x = round(position.x / tile_size.x) * tile_size.x
-	position.y = round(position.y / tile_size.y) * tile_size.y
+	position.x = floor(position.x / tile_size.x) * tile_size.x + tile_size.x * 0.5
+	position.y = floor(position.y / tile_size.y) * tile_size.y + tile_size.y * 0.5
 	started_moving = false
-	print("move complete at: ", position)
 	play_idle_animation()
 
 func is_tile_blocked(target: Vector2) -> bool:
 	var space := get_world_2d().direct_space_state
-	var query := PhysicsRayQueryParameters2D.create(
-		position,
-		target,
-		0b00000010
+	var target_centre: Vector2 = Vector2(
+		floor(target.x / tile_size.x) * tile_size.x + tile_size.x * 0.5,
+		floor(target.y / tile_size.y) * tile_size.y + tile_size.y * 0.5
 	)
-	# exclude expects RIDs — get it from the CollisionShape2D's parent body if you have one,
-	# or leave exclude empty since the raycast starts inside the player tile anyway
+	debug_ray_target = target_centre
+	queue_redraw()
+	var query := PhysicsRayQueryParameters2D.create(position, target_centre, 0b00000010)
 	var result := space.intersect_ray(query)
 	return not result.is_empty()
+
+func _draw() -> void:
+	if debug_ray_target != Vector2.ZERO:
+		var target_local := debug_ray_target - position
+		draw_line(Vector2.ZERO, target_local, Color.RED, 1.0)
+		draw_line(Vector2(-4, 0), Vector2(4, 0), Color.YELLOW, 1.0)
+		draw_line(Vector2(0, -4), Vector2(0, 4), Color.YELLOW, 1.0)
 
 func update_facing(dir: Vector2) -> void:
 	if dir.x > 0:
