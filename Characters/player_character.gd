@@ -3,6 +3,8 @@ extends CharacterBody2D
 @export var tile_size: Vector2 = Vector2(24, 21)
 @export var move_duration: float = 0.18
 @export var move_curve: Curve
+@export var visible_layer: TileMapLayer
+@export var vision_radius: int = 4
 
 enum FacingDirection { LEFT, RIGHT }
 var facing_direction: FacingDirection = FacingDirection.RIGHT
@@ -11,6 +13,7 @@ var started_moving: bool = false
 var last_move: Vector2 = Vector2.ZERO
 var current_tween: Tween = null
 var debug_ray_target: Vector2 = Vector2.ZERO
+var revealed_tiles: Array[Vector2i] = []
 
 @onready var animation: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision: CollisionShape2D = $CollisionShape2D
@@ -18,6 +21,46 @@ var debug_ray_target: Vector2 = Vector2.ZERO
 func _ready() -> void:
 	position.x = floor(position.x / tile_size.x) * tile_size.x + tile_size.x * 0.5
 	position.y = floor(position.y / tile_size.y) * tile_size.y + tile_size.y * 0.5
+	update_visibility_layer()
+
+func is_visible_from_player(world_pos: Vector2) -> bool:
+	var space := get_world_2d().direct_space_state
+	var dir := (world_pos - position).normalized()
+	var shortened_target := world_pos - dir * 2.0  # stop 2px short
+	var query := PhysicsRayQueryParameters2D.create(
+		position,
+		shortened_target,
+		0b00000010  # your wall physics layer
+		)
+	query.exclude = [get_rid()]
+	return space.intersect_ray(query).is_empty()
+
+func update_visibility_layer():
+	print("re-filling ", revealed_tiles.size(), " tiles")
+	for t in revealed_tiles:
+		visible_layer.set_cell(t, visible_layer.tile_set.get_source_id(0), Vector2i(0, 0))
+	revealed_tiles.clear()
+	
+	var player_tile := Vector2i(
+		floor(position.x / tile_size.x),
+		floor(position.y / tile_size.y)
+		)
+
+	for x in range(-vision_radius, vision_radius + 1):
+		for y in range(-vision_radius, vision_radius + 1):
+			var t := player_tile + Vector2i(x, y)
+			var world_pos := Vector2(
+				t.x * tile_size.x + tile_size.x * 0.5,
+				t.y * tile_size.y + tile_size.y * 0.5
+				)
+			if is_tile_blocked(world_pos):
+				# It's a wall — reveal by proximity alone, no raycast
+				visible_layer.erase_cell(t)
+				revealed_tiles.append(t)
+			elif is_visible_from_player(world_pos):
+				# It's open space — only reveal if raycast is clear
+				visible_layer.erase_cell(t)
+				revealed_tiles.append(t)
 
 func _process(_delta: float) -> void:
 	if started_moving:
@@ -74,6 +117,7 @@ func _on_move_complete() -> void:
 	position.x = floor(position.x / tile_size.x) * tile_size.x + tile_size.x * 0.5
 	position.y = floor(position.y / tile_size.y) * tile_size.y + tile_size.y * 0.5
 	started_moving = false
+	update_visibility_layer()
 	play_idle_animation()
 
 func is_tile_blocked(target: Vector2) -> bool:
