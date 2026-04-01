@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal visibility_updated
+
 @export var tile_size: Vector2 = Vector2(24, 21)
 @export var move_duration: float = 0.18
 @export var move_curve: Curve
@@ -23,16 +25,32 @@ func _ready() -> void:
 	position.y = floor(position.y / tile_size.y) * tile_size.y + tile_size.y * 0.5
 	update_visibility_layer()
 
-func is_visible_from_player(world_pos: Vector2) -> bool:
+func is_tile_in_radius(world_pos: Vector2) -> bool:
+	var player_tile:=Vector2i(
+		floor(position.x / tile_size.x),
+		floor(position.y / tile_size.y)
+	)
+	var target_tile:=Vector2i(
+		floor(world_pos.x / tile_size.x),
+		floor(world_pos.y / tile_size.y)
+	)
+
+	var diff :=target_tile-player_tile
+	return abs(diff.x) <= vision_radius and abs(diff.y) <= vision_radius
+
+func is_visible_from_player(world_pos: Vector2, exclude_rid:RID=RID()) -> bool:
 	var space := get_world_2d().direct_space_state
 	var dir := (world_pos - position).normalized()
-	var shortened_target := world_pos - dir * 2.0  # stop 2px short
+	var shortened_target := world_pos - dir   # stop 2px short
 	var query := PhysicsRayQueryParameters2D.create(
 		position,
 		shortened_target,
-		0b00000010  # your wall physics layer
+		0b00000110  # your wall physics layer
 		)
 	query.exclude = [get_rid()]
+	if exclude_rid.is_valid():
+		query.exclude.append(exclude_rid)
+		
 	return space.intersect_ray(query).is_empty()
 
 func update_visibility_layer():
@@ -61,6 +79,8 @@ func update_visibility_layer():
 				# It's open space — only reveal if raycast is clear
 				visible_layer.erase_cell(t)
 				revealed_tiles.append(t)
+	
+	visibility_updated.emit()
 
 func _process(_delta: float) -> void:
 	if started_moving:
@@ -128,7 +148,7 @@ func is_tile_blocked(target: Vector2) -> bool:
 	)
 	debug_ray_target = target_centre
 	queue_redraw()
-	var query := PhysicsRayQueryParameters2D.create(position, target_centre, 0b00000010)
+	var query := PhysicsRayQueryParameters2D.create(position, target_centre, 0b00000110)
 	var result := space.intersect_ray(query)
 	return not result.is_empty()
 

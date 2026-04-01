@@ -24,9 +24,14 @@ window/size/window_height_override=480
 window/stretch/mode="viewport"
 window/stretch/scale_mode="integer"
 
+[global_group]
+
+player=""
+
 [layer_names]
 
 2d_physics/layer_2="walls"
+2d_physics/layer_3="doors"
 
 [physics]
 
