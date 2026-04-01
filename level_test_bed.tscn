@@ -43,6 +43,7 @@ sources/0 = SubResource("TileSetAtlasSource_gfbe4")
 position = Vector2(48, 0)
 script = ExtResource("2_c3uxd")
 visible_layer = NodePath("../TileLayers/VisibilityLayer")
+vision_radius = 8
 
 [node name="Camera2D" type="Camera2D" parent="PlayerCharacter" unique_id=318109177]
 position = Vector2(-16, -96)
@@ -63,3 +64,4 @@ tile_set = SubResource("TileSet_2seuc")
 
 [node name="Door" parent="Interactables" unique_id=754731965 instance=ExtResource("5_2seuc")]
 position = Vector2(36, -84)
+visible_by_proximity_only = true

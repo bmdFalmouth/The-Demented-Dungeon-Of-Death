@@ -1,12 +1,14 @@
 @tool
 extends StaticBody2D
 
+@export var visible_by_proximity_only : bool =false
+var revealed:bool=false
+
 func _notification(what: int) -> void:
 	if what== NOTIFICATION_TRANSFORM_CHANGED and Engine.is_editor_hint():
 		if is_inside_tree():
 			snap_to_tile_centre()
 
-var revealed: bool=false
 var player: CharacterBody2D=null
 
 const TILE_SIZE:=Vector2(24,21)
@@ -25,11 +27,21 @@ func _ready() -> void:
 		print("Interactable: player NOT found")
 
 func on_visibility_updated() -> void:
-	if revealed:
-		return
 	print("Interactable: visibility check at ", global_position)
 	print("  in radius: ", player.is_tile_in_radius(global_position))
 	print("  raycast clear: ", player.is_visible_from_player(global_position))
+	if visible_by_proximity_only:
+		if player.is_tile_in_radius(global_position):
+			show()
+		else:
+			hide()
+		return
+	
+	if revealed:
+		return
+	
+	if not player.is_tile_in_radius(global_position):
+		return
 	if player.is_tile_in_radius(global_position) and player.is_visible_from_player(global_position,get_rid_for_raycast()):
 		revealed=true
 		show()

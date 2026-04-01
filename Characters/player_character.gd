@@ -8,6 +8,9 @@ signal visibility_updated
 @export var visible_layer: TileMapLayer
 @export var vision_radius: int = 4
 
+const VISION_MASK: int = 0b00000110
+const MOVE_MASK: int = 0b00001110
+
 enum FacingDirection { LEFT, RIGHT }
 var facing_direction: FacingDirection = FacingDirection.RIGHT
 
@@ -41,17 +44,21 @@ func is_tile_in_radius(world_pos: Vector2) -> bool:
 func is_visible_from_player(world_pos: Vector2, exclude_rid:RID=RID()) -> bool:
 	var space := get_world_2d().direct_space_state
 	var dir := (world_pos - position).normalized()
-	var shortened_target := world_pos - dir   # stop 2px short
+	var shortened_target := world_pos - dir * 2.0  # stop 2px short
 	var query := PhysicsRayQueryParameters2D.create(
 		position,
 		shortened_target,
-		0b00000110  # your wall physics layer
+		VISION_MASK  # your wall physics layer
 		)
 	query.exclude = [get_rid()]
 	if exclude_rid.is_valid():
 		query.exclude.append(exclude_rid)
+	
+	var result:=space.intersect_ray(query)
+	if not result.is_empty():
+		print("Ray blocked by: ", result.collider, " at ", result.position)
 		
-	return space.intersect_ray(query).is_empty()
+	return result.is_empty()
 
 func update_visibility_layer():
 	print("re-filling ", revealed_tiles.size(), " tiles")
@@ -148,7 +155,7 @@ func is_tile_blocked(target: Vector2) -> bool:
 	)
 	debug_ray_target = target_centre
 	queue_redraw()
-	var query := PhysicsRayQueryParameters2D.create(position, target_centre, 0b00000110)
+	var query := PhysicsRayQueryParameters2D.create(position, target_centre, MOVE_MASK)
 	var result := space.intersect_ray(query)
 	return not result.is_empty()
 
