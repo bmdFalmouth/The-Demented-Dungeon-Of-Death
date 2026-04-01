@@ -92,6 +92,9 @@ func update_visibility_layer():
 func _process(_delta: float) -> void:
 	if started_moving:
 		return
+	
+	if Input.is_action_just_pressed("interact"):
+		try_interact()
 
 	var input := get_input_dir()
 	if input != Vector2.ZERO:
@@ -100,6 +103,31 @@ func _process(_delta: float) -> void:
 	if last_move != Vector2.ZERO:
 		try_move(last_move)
 		last_move = Vector2.ZERO
+
+func interact_dir(direction:Vector2)->Dictionary:
+	var target_pos=position+direction*Vector2(tile_size.x,tile_size.y)
+	
+	var space := get_world_2d().direct_space_state
+	var query := PhysicsRayQueryParameters2D.create(
+		position,
+        target_pos,
+        0b00001100  # interactables layer only
+    )
+
+	var result:=space.intersect_ray(query)	
+	return result
+
+func try_interact():
+	print("Interact")
+	var up_result=interact_dir(Vector2.UP)
+	var down_result=interact_dir(Vector2.DOWN)
+	var left_result=interact_dir(Vector2.LEFT)
+	var right_result=interact_dir(Vector2.LEFT)
+	
+	var results=[up_result,down_result,left_result,right_result]
+	for result in results:
+		if result and result.collider.has_method("interact"):
+			result.collider.interact(self)
 
 func get_input_dir() -> Vector2:
 	var x := Input.get_axis("ui_left", "ui_right")

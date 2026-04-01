@@ -50,7 +50,7 @@ func snap_to_tile_centre() -> void:
 	global_position.x=floor(global_position.x/TILE_SIZE.x)* TILE_SIZE.x + TILE_SIZE.x *0.5
 	global_position.y=floor(global_position.y/TILE_SIZE.y)* TILE_SIZE.y + TILE_SIZE.y *0.5
 
-func interact()->void:
+func interact(player_character)->void:
 	pass
 
 func get_rid_for_raycast() -> RID:

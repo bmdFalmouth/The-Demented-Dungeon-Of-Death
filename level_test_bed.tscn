@@ -42,7 +42,7 @@ sources/0 = SubResource("TileSetAtlasSource_gfbe4")
 script = ExtResource("1_uqd87")
 
 [node name="PlayerCharacter" parent="." unique_id=612200860 node_paths=PackedStringArray("visible_layer") groups=["player"] instance=ExtResource("1_e5koq")]
-position = Vector2(48, 0)
+position = Vector2(40, -24)
 script = ExtResource("2_c3uxd")
 visible_layer = NodePath("../TileLayers/VisibilityLayer")
 vision_radius = 8
