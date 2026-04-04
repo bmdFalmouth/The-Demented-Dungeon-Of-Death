@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://bn4rwtgnyci4w" path="res://Sprites/walls_doors.png" id="2_ydat2"]
 [ext_resource type="Texture2D" uid="uid://qo3j1p5rouaa" path="res://Sprites/blank_tile.png" id="3_gfbe4"]
 [ext_resource type="PackedScene" uid="uid://boxuqeaeh5prg" path="res://Interactables/door.tscn" id="5_2seuc"]
+[ext_resource type="PackedScene" uid="uid://hlxv8h124j3j" path="res://Interactables/key.tscn" id="7_kte6r"]
+[ext_resource type="Script" uid="uid://ca2kuvsm384qf" path="res://Interactables/key.gd" id="8_tjgvb"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c3uxd"]
 texture = ExtResource("2_ydat2")
@@ -66,4 +68,9 @@ tile_set = SubResource("TileSet_2seuc")
 
 [node name="Door" parent="Interactables" unique_id=754731965 instance=ExtResource("5_2seuc")]
 position = Vector2(36, -84)
+visible_by_proximity_only = true
+
+[node name="Key" parent="." unique_id=214633550 instance=ExtResource("7_kte6r")]
+position = Vector2(-60, -52.5)
+script = ExtResource("8_tjgvb")
 visible_by_proximity_only = true
