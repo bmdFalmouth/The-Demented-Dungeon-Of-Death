@@ -66,11 +66,11 @@ tile_set = SubResource("TileSet_2seuc")
 
 [node name="Interactables" type="Node2D" parent="." unique_id=551464577]
 
-[node name="Door" parent="Interactables" unique_id=754731965 instance=ExtResource("5_2seuc")]
-position = Vector2(36, -84)
-visible_by_proximity_only = true
-
-[node name="Key" parent="." unique_id=214633550 instance=ExtResource("7_kte6r")]
-position = Vector2(-60, -52.5)
+[node name="Key" parent="Interactables" unique_id=214633550 instance=ExtResource("7_kte6r")]
+position = Vector2(72, 16)
 script = ExtResource("8_tjgvb")
+
+[node name="Door" parent="Interactables" unique_id=754731965 instance=ExtResource("5_2seuc")]
+visible = true
+position = Vector2(40, -80)
 visible_by_proximity_only = true

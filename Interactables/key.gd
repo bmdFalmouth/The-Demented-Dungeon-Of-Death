@@ -1,5 +1,4 @@
-@tool
-extends "res://Interactables/base_interactable.gd"
+extends "res://Scripts/base_interactable.gd"
 
 
 # Called when the node enters the scene tree for the first time.

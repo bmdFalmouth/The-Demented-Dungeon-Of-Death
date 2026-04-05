@@ -2,21 +2,26 @@
 
 [ext_resource type="Texture2D" uid="uid://bn4rwtgnyci4w" path="res://Sprites/walls_doors.png" id="1_cpjwb"]
 [ext_resource type="Script" uid="uid://dik4dl5oi1sja" path="res://Interactables/door.gd" id="1_pyvbm"]
+[ext_resource type="Script" uid="uid://bvq0l53xl6qaf" path="res://Scripts/snap_grid.gd" id="3_l3a2p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l3a2p"]
 
 [node name="Door" type="StaticBody2D" unique_id=1989339291]
+visible = false
 position = Vector2(12, 0)
 collision_layer = 4
 script = ExtResource("1_pyvbm")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1546063330]
-position = Vector2(0, 10)
+position = Vector2(0, 11)
 texture = ExtResource("1_cpjwb")
 hframes = 4
 vframes = 2
 frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=30542130]
-position = Vector2(0, 10)
+position = Vector2(0, 11)
 shape = SubResource("RectangleShape2D_l3a2p")
+
+[node name="SnapToGrid" type="Node2D" parent="." unique_id=1902247205]
+script = ExtResource("3_l3a2p")

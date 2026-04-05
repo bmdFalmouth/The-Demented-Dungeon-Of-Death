@@ -1,17 +1,19 @@
 [gd_scene format=3 uid="uid://hlxv8h124j3j"]
 
 [ext_resource type="Texture2D" uid="uid://dueq0nmevdu6v" path="res://Sprites/items.png" id="1_yy3dd"]
+[ext_resource type="Script" uid="uid://bvq0l53xl6qaf" path="res://Scripts/snap_grid.gd" id="2_bp4j5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bp4j5"]
 
 [node name="Key" type="StaticBody2D" unique_id=1987062082]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=294184621]
-position = Vector2(0, 10)
 texture = ExtResource("1_yy3dd")
 hframes = 3
 vframes = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=766536184]
-position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_bp4j5")
+
+[node name="Node2D" type="Node2D" parent="." unique_id=2013002097]
+script = ExtResource("2_bp4j5")
